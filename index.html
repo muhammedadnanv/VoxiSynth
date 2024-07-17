@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Text-to-Speech (TTS) Website</title>
-  <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="Designer.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="Designer.png">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -99,10 +99,7 @@
         <div class="form-group">
             <label for="lang-select">Select Language:</label>
             <select id="lang-select" class="form-control">
-                <option value="en-US">English (US)</option>
-                <option value="en-GB">English (UK)</option>
-                <option value="es-ES">Spanish</option>
-                <!-- Add more languages as needed -->
+                <!-- Options will be populated dynamically -->
             </select>
         </div>
         <div class="form-group">
@@ -125,7 +122,7 @@
         </div>
         <a href="https://www.buymeacoffee.com/muhammedadan"><img src="https://img.buymeacoffee.com/button-api/?text=Donate Me&emoji=🤗&slug=muhammedadan&button_colour=1b28e4&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" /></a>
     </div>
-     
+
     <div class="footer">
         <p>&copy; 2024 Advanced Text-to-Speech Converter Developed By Muhammed Adnan. All Rights Reserved.</p>
     </div>
@@ -147,11 +144,22 @@
         function populateVoiceList() {
             voices = synth.getVoices();
             voiceSelect.innerHTML = '';
+            langSelect.innerHTML = '';
+
+            const langs = new Set();
             voices.forEach((voice, i) => {
                 const option = document.createElement('option');
                 option.textContent = `${voice.name} (${voice.lang})`;
                 option.value = i;
                 voiceSelect.appendChild(option);
+                langs.add(voice.lang);
+            });
+
+            langs.forEach((lang) => {
+                const option = document.createElement('option');
+                option.textContent = lang;
+                option.value = lang;
+                langSelect.appendChild(option);
             });
         }
 
@@ -222,24 +230,24 @@
 
         downloadBtn.addEventListener('click', () => {
             alert("Download feature is not supported in this example. Implementing download functionality requires server-side support.");
+            // Implement server-side functionality here
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered: ', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
 </body>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-          console.log('Service Worker registered: ', registration);
-        })
-        .catch(error => {
-          console.log('Service Worker registration failed: ', error);
-        });
-    });
-  }
-</script>
-<script src="sw.js"></script>
 </html>
